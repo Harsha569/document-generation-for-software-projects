@@ -60,14 +60,18 @@ npm install
 npm run compile
 ```
 To launch the extension:
-- Open the root folder in VS Code.
-- Press `F5` to open the Extension Development Host.
+- Open the `documentgenerater` folder in VS Code.
+- Run without debugging (`Ctrl` + `F5`).
+- A new VS Code window will open with the extension running.
+- Open the project folder in the new VS Code window.
+
 
 ---
 
 ## Settings & Commands
 
 ### Commands
+- These commands are visible in the command palette (Ctrl + Shift + P) after running the extension.
 - **Live Docs: Open Documentation**: Opens the main WebView tab.
 - **Live Docs: Refresh Documentation**: Triggers a full documentation regeneration for the current project.
 - **Live Docs: Connect Project**: Connects the currently open VS Code workspace to the AI documentation backend.
