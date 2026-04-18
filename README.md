@@ -1,71 +1,84 @@
-# documentgenerater README
+# Live AI Project Docs
 
-This is the README for your extension "documentgenerater". After writing up a brief description, we recommend including the following sections.
+🚀 **Live AI Project Docs** is a powerful VS Code Extension and Backend Server combo that automatically maps your codebase and generates real-time, interactive documentation and architectural diagrams using AI.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- **Live Codebase Syncing**: Automatically watches files directly in VS Code and pushes structural updates to the backend.
+- **Knowledge Graph Integration**: Generates deep project insights using [Graphify](https://pypi.org/project/graphifyy/) to extract AST nodes, imports, functions, and community groupings.
+- **AI-Powered Generation**: Integrates seamlessly with OpenRouter (Gemini, Claude, GPT) to build comprehensive summaries, endpoint lists, and architecture documentation.
+- **Auto-Generated Mermaid Diagrams**: Automatically generates syntactically correct High-Level Design (HLD) flowcharts and Module Interaction sequence diagrams.
+- **In-Editor WebView & Sidebar**: Read the documentation natively right inside VS Code without switching windows.
 
 ---
 
-## Following extension guidelines
+## Project Structure
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+This repository contains two main components:
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+1. **`documentgenerater/` (VS Code Extension)**
+   - Displays the interactive webviews (DocsPanel and DocsSidebarProvider).
+   - Monitors standard editors and file changes via `vscode.workspace`.
+   - Renders Markdown and interactive Mermaid SVG diagrams.
 
-## Working with Markdown
+2. **`backend/` (Node.js AI Server)**
+   - Parses the knowledge graph using Python's `graphifyy`.
+   - Sends carefully structured prompts to LLMs to generate project documentation.
+   - Manages state, components, and project timelines.
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+---
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+## Getting Started
 
-## For more information
+### 1. Prerequisites
+- **Node.js** (v18+)
+- **Python 3** (For building the knowledge graph)
+- **OpenRouter API Key** (or another OpenAI-compatible API)
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+pip install graphifyy
+```
+Create a `.env` file in the `backend/` directory:
+```env
+PORT=3000
+OPENROUTER_API_KEY=your_api_key_here
+OPENROUTER_MODEL=google/gemini-2.0-flash-lite-001
+```
+Start the backend:
+```bash
+npm run dev
+```
 
-**Enjoy!**
+### 3. Extension Setup
+In a new terminal window:
+```bash
+cd documentgenerater
+npm install
+npm run compile
+```
+To launch the extension:
+- Open the root folder in VS Code.
+- Press `F5` to open the Extension Development Host.
+
+---
+
+## Settings & Commands
+
+### Commands
+- **Live Docs: Open Documentation**: Opens the main WebView tab.
+- **Live Docs: Refresh Documentation**: Triggers a full documentation regeneration for the current project.
+- **Live Docs: Connect Project**: Connects the currently open VS Code workspace to the AI documentation backend.
+- **Live Docs: Explain This File / Selection**: Highlight code to instantly get an AI explanation widget.
+
+### Extension Settings
+You can customize the extension directly in the VS Code Settings panel:
+- `liveAIDocs.backendUrl`: Defaults to `http://localhost:3000/api`.
+- `liveAIDocs.autoConnect`: Automatically connect the project when a workspace opens.
+- `liveAIDocs.excludePatterns`: Define glob patterns to omit from the knowledge graph (e.g., `node_modules`, `dist`).
+
+---
+
+
