@@ -1,0 +1,175 @@
+{
+  "name": "live-ai-project-docs",
+  "displayName": "Live AI Project Docs",
+  "description": "AI-powered live documentation system that automatically generates and updates project documentation in real-time",
+  "version": "0.0.1",
+  "publisher": "live-ai-docs",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "documentation",
+    "ai",
+    "live",
+    "auto-docs",
+    "llm"
+  ],
+  "icon": "images/icon.png",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "liveAIDocs.connectProject",
+        "title": "Live Docs: Connect Project",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "liveAIDocs.disconnectProject",
+        "title": "Live Docs: Disconnect Project",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "liveAIDocs.openDocs",
+        "title": "Live Docs: Open Documentation",
+        "icon": "$(book)"
+      },
+      {
+        "command": "liveAIDocs.refreshDocs",
+        "title": "Live Docs: Refresh Documentation",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "liveAIDocs.explainFile",
+        "title": "Live Docs: Explain This File",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "liveAIDocs.explainSelection",
+        "title": "Live Docs: Explain Selection",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "liveAIDocs.askProject",
+        "title": "Live Docs: Ask About Project",
+        "icon": "$(question)"
+      },
+      {
+        "command": "liveAIDocs.showTimeline",
+        "title": "Live Docs: Show Change Timeline",
+        "icon": "$(history)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "liveAIDocs.explainFile",
+          "group": "liveaidocs@1",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "liveAIDocs.explainSelection",
+          "group": "liveaidocs@2",
+          "when": "editorHasSelection"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "liveAIDocs.explainFile",
+          "group": "liveaidocs@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Live AI Project Docs",
+      "properties": {
+        "liveAIDocs.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:3000/api",
+          "description": "URL of the AI documentation backend server"
+        },
+        "liveAIDocs.authToken": {
+          "type": "string",
+          "default": "",
+          "description": "Authentication token for the backend API"
+        },
+        "liveAIDocs.autoConnect": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically connect project when opening a workspace"
+        },
+        "liveAIDocs.syncDebounceMs": {
+          "type": "number",
+          "default": 500,
+          "description": "Delay in milliseconds before sending file changes to backend"
+        },
+        "liveAIDocs.excludePatterns": {
+          "type": "array",
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/*.log",
+            "**/.env*"
+          ],
+          "description": "Glob patterns to exclude from scanning and watching"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "liveAIDocs",
+          "title": "Live AI Docs",
+          "icon": "$(book)"
+        }
+      ]
+    },
+    "views": {
+      "liveAIDocs": [
+        {
+          "type": "webview",
+          "id": "liveAIDocs.docsPanel",
+          "name": "Documentation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "dependencies": {
+    "axios": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.54.0",
+    "eslint": "^9.39.2",
+    "esbuild": "^0.27.2",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
